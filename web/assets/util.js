@@ -26,57 +26,57 @@ Ajs_Util = {
     },
     
     _addListener: function() {
-		if (window.addEventListener) {
-			return function(element, eventType, fn, capture) {
-				element.addEventListener(eventType, fn, capture);
-			};
-		} else if (window.attachEvent) {
-			return function(element, eventType, fn, capture) {
-				element.attachEvent("on" + eventType, fn);
-			};
-		} else {
-			return function() {};
-		}
-	} (),
-	
-	_removeListener: function() {
-		if (window.removeEventListener) {
-			return function(element, eventType, fn, capture) {
-				element.removeEventListener(eventType, fn, capture);
-			};
-		} else if (window.detachEvent) {
-			return function(element, eventType, fn) {
-				element.detachEvent("on" + eventType, fn);
-			};
-		} else {
-			return function() {};
-		}
-	} (),
+        if (window.addEventListener) {
+            return function(element, eventType, fn, capture) {
+                element.addEventListener(eventType, fn, capture);
+            };
+        } else if (window.attachEvent) {
+            return function(element, eventType, fn, capture) {
+                element.attachEvent("on" + eventType, fn);
+            };
+        } else {
+            return function() {};
+        }
+    } (),
+    
+    _removeListener: function() {
+        if (window.removeEventListener) {
+            return function(element, eventType, fn, capture) {
+                element.removeEventListener(eventType, fn, capture);
+            };
+        } else if (window.detachEvent) {
+            return function(element, eventType, fn) {
+                element.detachEvent("on" + eventType, fn);
+            };
+        } else {
+            return function() {};
+        }
+    } (),
     
     addListener: function(element, eventType, fn, scope, args) {
-		if (!scope) scope = element;
-		var extraArgs = Array.prototype.slice.call(arguments, 4);
-		var wrappedFn = function(e) {
-			var a = [e].concat(extraArgs);			
-			return fn.apply(scope, a);
-		};
-		var res = {'fn': wrappedFn, 'eventType': eventType};
-		this._addListener(element, eventType, wrappedFn);
-		return res;
-	},
+        if (!scope) scope = element;
+        var extraArgs = Array.prototype.slice.call(arguments, 4);
+        var wrappedFn = function(e) {
+            var a = [e].concat(extraArgs);          
+            return fn.apply(scope, a);
+        };
+        var res = {'fn': wrappedFn, 'eventType': eventType};
+        this._addListener(element, eventType, wrappedFn);
+        return res;
+    },
 
-	removeListener: function(element, listener) {
-		if (listener.fn && listener.eventType)
-			this._removeListener(element, listener.eventType, listener.fn);
-	},
+    removeListener: function(element, listener) {
+        if (listener.fn && listener.eventType)
+            this._removeListener(element, listener.eventType, listener.fn);
+    },
     
-		
+        
     ucFirst: function(s) {
         return s.substr(0, 1).toUpperCase() + s.substr(1);
     },
 
     extend: function(subClass, baseClass) {
-    	for (var i in baseClass.prototype) if (!(i in subClass.prototype)) subClass.prototype[i] = baseClass.prototype[i];
+        for (var i in baseClass.prototype) if (!(i in subClass.prototype)) subClass.prototype[i] = baseClass.prototype[i];
     },
     
     initFromOptions: function(object, proto) {
@@ -95,7 +95,7 @@ Ajs_Util = {
     },
     
     deleteNodes: function(nodes) {
-    	for (var i = 0; i < nodes.length; i++) if (nodes[i].parentNode) nodes[i].parentNode.removeChild(nodes[i]);
+        for (var i = 0; i < nodes.length; i++) if (nodes[i].parentNode) nodes[i].parentNode.removeChild(nodes[i]);
     },
 
     pushWithOrder: function(array, item, orderProperty) {
@@ -113,23 +113,23 @@ Ajs_Util = {
      * Converts value to string in PHP manner
      */
     toString: function(value) {
-    	var res;
-    	switch (true) {
-    		case value === false:
-    		case value === undefined:
-    		case value === null:
-    		case value instanceof Array && !value.length:
-    			res = '';
-    			break;
-    			
-    		case value === true:
-    			res = 1;
-    			break;
-    		
-    		default:
-    			res = '' + value;
-    	}
-    	return res;
+        var res;
+        switch (true) {
+            case value === false:
+            case value === undefined:
+            case value === null:
+            case value instanceof Array && !value.length:
+                res = '';
+                break;
+                
+            case value === true:
+                res = 1;
+                break;
+            
+            default:
+                res = '' + value;
+        }
+        return res;
     },
 
     /**
@@ -150,12 +150,12 @@ Ajs_Util = {
     },
     
     listOwnProperties: function(object) {
-    	var res = [];
+        var res = [];
         if (typeof(object.hasOwnProperty) === 'function') {
-        	for (var i in object) if (object.hasOwnProperty(i)) res.push(i);
+            for (var i in object) if (object.hasOwnProperty(i)) res.push(i);
         } else {
-        	for (var i in object) 
-        		if ((typeof(object[i]) !== 'undefined') && object.prototype[i] !== object[i]) res.push(i);
+            for (var i in object) 
+                if ((typeof(object[i]) !== 'undefined') && object.prototype[i] !== object[i]) res.push(i);
         }
         return res;
     },
@@ -216,15 +216,15 @@ Ajs_Util = {
         if (assoc) res = typeof assoc === 'object'? assoc : {};
         if (data === undefined) return '';
         if (data instanceof Array) {
-        	if (data.length) {
-	            for (i = 0; i < data.length; i++) {
+            if (data.length) {
+                for (i = 0; i < data.length; i++) {
                     if (assoc) Ajs_Util.makeQuery(data[i], paramName? paramName + '[' + i + ']' : i, false, res);
-	                else res = res + Ajs_Util.makeQuery(data[i], paramName? paramName + '[' + i + ']' : i);
-	            }
-        	} else {
-        		if (assoc) res[paramName] = '';
+                    else res = res + Ajs_Util.makeQuery(data[i], paramName? paramName + '[' + i + ']' : i);
+                }
+            } else {
+                if (assoc) res[paramName] = '';
                     else res = '&' + paramName + '=';
-        	}
+            }
         } else {
             if ((typeof data) == 'object') {
                 for (i in data) if (Ajs_Util.hasOwnProperty(data, i)) {
@@ -239,85 +239,85 @@ Ajs_Util = {
         if (!assoc && stripLeadingAmpersand && res.length) res = res.slice(1);
         return res;
     },
-	
-	arrayToObject: function(arr) { 
-		var res = {}, l = arr.length; 
-		for (var i = 0; i < l; i++) {
-			if (arr[i] !== undefined) res[i] = arr[i];
-		}
-		return res;
-	},
-	
-	/**
-	 * Since type of target may need to be changed to Array or more general object, 
-	 * the recommended usage is as follows:
-	 *  
-	 * 		var foo = Ajs_Util.setByPath(foo, ['a', 1, 'c'], 'val'); 
-	 */
-	setByPath: function(target, arrPath, value) {
-		
-		var l = arrPath.length;
-		
-		if (!l) target = value;
-		else {
-			if (typeof target != 'object' || target === null) target = [];
-			
-			var root = {'dummy' : target}, prev = root, prevKey = 'dummy', seg, nKey;
-			
-			for (var i = 0; i < l; i++) {
-				var last = (i >= (l - 1)), curr = prev[prevKey];
-				seg = '' + arrPath[i], nKey = parseInt(seg);
-				if (!seg.length) {
-					if (curr instanceof Array) nKey = curr.length;
-					else {
-						nKey = 0; 
-						for (var prop in curr) 
-							if (Ajs_Util.hasOwnProperty(curr, prop)) {
-								var idx = parseInt(prop);
-								if (idx >= nKey) nKey = idx + 1;
-							}
-					}
-					seg = nKey; // we need this to make next if() work
-				}
-				if ((nKey >= 0) && (('' + nKey) == seg)) { // we have numeric key!
-					if (last) curr[nKey] = value;
-					else {
-						if (curr[nKey] === undefined) curr[nKey] = [];
-					}
-					prev = curr;
-					prevKey = nKey;
-				} else {
-					// it's a string key
-					if (curr instanceof Array) {
-						prev[prevKey] = Ajs_Util.arrayToObject(prev[prevKey]);
-						curr = prev[prevKey];
-					}
-					if (last) curr[seg] = value;
-					else {
-						if (curr[seg] === undefined) curr[seg] = [];
-						prev = curr;
-						prevKey = seg;
-					}
-				}
-			}
-			
-			target = root['dummy'];
-		}
-		return target;
-	},
+    
+    arrayToObject: function(arr) { 
+        var res = {}, l = arr.length; 
+        for (var i = 0; i < l; i++) {
+            if (arr[i] !== undefined) res[i] = arr[i];
+        }
+        return res;
+    },
+    
+    /**
+     * Since type of target may need to be changed to Array or more general object, 
+     * the recommended usage is as follows:
+     *  
+     *      var foo = Ajs_Util.setByPath(foo, ['a', 1, 'c'], 'val'); 
+     */
+    setByPath: function(target, arrPath, value) {
+        
+        var l = arrPath.length;
+        
+        if (!l) target = value;
+        else {
+            if (typeof target != 'object' || target === null) target = [];
+            
+            var root = {'dummy' : target}, prev = root, prevKey = 'dummy', seg, nKey;
+            
+            for (var i = 0; i < l; i++) {
+                var last = (i >= (l - 1)), curr = prev[prevKey];
+                seg = '' + arrPath[i], nKey = parseInt(seg);
+                if (!seg.length) {
+                    if (curr instanceof Array) nKey = curr.length;
+                    else {
+                        nKey = 0; 
+                        for (var prop in curr) 
+                            if (Ajs_Util.hasOwnProperty(curr, prop)) {
+                                var idx = parseInt(prop);
+                                if (idx >= nKey) nKey = idx + 1;
+                            }
+                    }
+                    seg = nKey; // we need this to make next if() work
+                }
+                if ((nKey >= 0) && (('' + nKey) == seg)) { // we have numeric key!
+                    if (last) curr[nKey] = value;
+                    else {
+                        if (curr[nKey] === undefined) curr[nKey] = [];
+                    }
+                    prev = curr;
+                    prevKey = nKey;
+                } else {
+                    // it's a string key
+                    if (curr instanceof Array) {
+                        prev[prevKey] = Ajs_Util.arrayToObject(prev[prevKey]);
+                        curr = prev[prevKey];
+                    }
+                    if (last) curr[seg] = value;
+                    else {
+                        if (curr[seg] === undefined) curr[seg] = [];
+                        prev = curr;
+                        prevKey = seg;
+                    }
+                }
+            }
+            
+            target = root['dummy'];
+        }
+        return target;
+    },
     
     parseQuery: function(string, delim, eq) {
-    	if (delim === undefined) delim = '&';
-    	if (eq === undefined) eq = '=';
-    	string = decodeURI(string);
-    	var pairs = string.split(delim), l = pairs.length, res = [];
-    	for (var i = 0; i < l; i++) {
-    		var nameVal = pairs[i].split(eq, 2), path = nameVal[0].replace(']', '');
-    		path = path.replace(/\]/g, '').split('[');
-    		if (nameVal.length < 2) nameVal.push('');
-    		res = Ajs_Util.setByPath(res, path, decodeURIComponent(nameVal[1]));
-    	}
-    	return res;
+        if (delim === undefined) delim = '&';
+        if (eq === undefined) eq = '=';
+        string = decodeURI(string);
+        var pairs = string.split(delim), l = pairs.length, res = [];
+        for (var i = 0; i < l; i++) {
+            var nameVal = pairs[i].split(eq, 2), path = nameVal[0].replace(']', '');
+            path = path.replace(/\]/g, '').split('[');
+            if (nameVal.length < 2) nameVal.push('');
+            res = Ajs_Util.setByPath(res, path, decodeURIComponent(nameVal[1]));
+        }
+        return res;
     },
     
     pathToArray: function(string) { 
@@ -359,33 +359,33 @@ Ajs_Util = {
      * @return bool true if {value1} 'loosely equals' {value2}, false otherwise 
      */
     looseCompare: function(value1, value2) {
-    	var res;
-    	if ((typeof value1) == 'object' && value1 !== null && value2 !== null) {
-    		if ((value1 instanceof Array)) {
-    			// Compare arrays
-    			var l = value1.length;
-    			if (value2 instanceof Array && (l == value2.length)) {
-    				res = true;
-    				for (var i = 0; (i < l) && res; i++) if (!Ajs_Util.looseCompare(value1[i], value2[i])) res = false;
-    			} else {
-    				res = false;
-    			}
-    		} else {
-    			if ((typeof value2) == 'object') {
-    				// Compare objects
-    				var p1 = Ajs_Util.listOwnProperties(value1), p2 = Ajs_Util.listOwnProperties(value2), l = p1.length; 
-    				if ((l == p2.length) && !Ajs_Util.arrayDiff(p2, p1).length) {
-    					res = true;
-    					for (var i = l - 1; res && (i >= 0); i--) if (!Ajs_Util.looseCompare(value1[p1[i]], value2[p1[i]])) res = false;
-    				} else res = false;
-    			} else {
-    				res = false;
-    			}
-    		}
-    	} else {
-    		res = (value1 == value2);
-    	}
-    	return res;
+        var res;
+        if ((typeof value1) == 'object' && value1 !== null && value2 !== null) {
+            if ((value1 instanceof Array)) {
+                // Compare arrays
+                var l = value1.length;
+                if (value2 instanceof Array && (l == value2.length)) {
+                    res = true;
+                    for (var i = 0; (i < l) && res; i++) if (!Ajs_Util.looseCompare(value1[i], value2[i])) res = false;
+                } else {
+                    res = false;
+                }
+            } else {
+                if ((typeof value2) == 'object') {
+                    // Compare objects
+                    var p1 = Ajs_Util.listOwnProperties(value1), p2 = Ajs_Util.listOwnProperties(value2), l = p1.length; 
+                    if ((l == p2.length) && !Ajs_Util.arrayDiff(p2, p1).length) {
+                        res = true;
+                        for (var i = l - 1; res && (i >= 0); i--) if (!Ajs_Util.looseCompare(value1[p1[i]], value2[p1[i]])) res = false;
+                    } else res = false;
+                } else {
+                    res = false;
+                }
+            }
+        } else {
+            res = (value1 == value2);
+        }
+        return res;
     },
 
     trim: function(string) {
@@ -397,30 +397,30 @@ Ajs_Util = {
     },
     
     addRemoveClassName: function(element, toAdd, toRemove) {
-    	if (typeof toAdd == 'string') toAdd = toAdd.split(' ');
-    	else if (!toAdd) toAdd = [];
-    	
-    	if (typeof toRemove == 'string') toRemove = toRemove.split(' ');
-    	else if (!toRemove) toRemove = [];
-    	
-    	var o = c = element.getAttribute('class');
-    	if (!c) c = '';
-    	
+        if (typeof toAdd == 'string') toAdd = toAdd.split(' ');
+        else if (!toAdd) toAdd = [];
+        
+        if (typeof toRemove == 'string') toRemove = toRemove.split(' ');
+        else if (!toRemove) toRemove = [];
+        
+        var o = c = element.getAttribute('class');
+        if (!c) c = '';
+        
         var ol, l, i;
         
-    	for (i = 0, l = toRemove.length; i < l; i++) {
+        for (i = 0, l = toRemove.length; i < l; i++) {
             do {
                 ol = c.length;
                 c = c.replace(toRemove[i], '');
             } while (c.length != ol);
-    	}    	
-    	
-    	if (toAdd.length) {
+        }       
+        
+        if (toAdd.length) {
              for (i = 0, l = toAdd.length; i < l; i++) {
                 if (c.indexOf(toAdd[i]) < 0) c = c + ' ' + toAdd[i];
              }
         }
-    	if (c != 0) element.setAttribute('class', c);
+        if (c != 0) element.setAttribute('class', c);
     },
     
     /**
@@ -428,40 +428,40 @@ Ajs_Util = {
      * If it points to local page, returns the fragment, else returns whole {href} (or {def} if it's given  
      */
     getLocalFragment: function(href, def) {
-    	href = '' + href;
-    	if (href.slice(0, 1) == '#') return href;
-    	else {
-    		var s = href.indexOf('#'), foo = [];
-    		if (s >= 0) {
-    			foo.push (href.slice(0, s));
-    			foo.push (href.slice(s + 1, href.length));
-    		}
-    		var bar = document.location.href.split('#', 2);
-    		if ((foo.length == 2) && (foo[0] == bar[0])) {
-    			href = '#' + foo[1];
-    		}
-    			else if (def !== undefined) href = def;
-    	}
-    	return href;
+        href = '' + href;
+        if (href.slice(0, 1) == '#') return href;
+        else {
+            var s = href.indexOf('#'), foo = [];
+            if (s >= 0) {
+                foo.push (href.slice(0, s));
+                foo.push (href.slice(s + 1, href.length));
+            }
+            var bar = document.location.href.split('#', 2);
+            if ((foo.length == 2) && (foo[0] == bar[0])) {
+                href = '#' + foo[1];
+            }
+                else if (def !== undefined) href = def;
+        }
+        return href;
     },
     
-	callScripts: function(data, args, context) {
-    	if (context === undefined) context = window;
-		if (!(args instanceof Array)) args = [];
-		if (data instanceof Array) {
-			for (var i = 0, c = data.length; i < c; i++) {
-				this.callScripts(data[i], args, context);
-			}
-		} else if (typeof data == 'object') {
-			for (var i in data) {
-				if (Ajs_Util.hasOwnProperty(data, i)) this.callScripts(data[i], args, context);
-			}
-		} else if (typeof data == 'function') {
-			data.apply(context, args);
-		} else if (typeof data == 'string') {
-			(function(d){eval(d);}).call(context, data);
-		}
-	},
+    callScripts: function(data, args, context) {
+        if (context === undefined) context = window;
+        if (!(args instanceof Array)) args = [];
+        if (data instanceof Array) {
+            for (var i = 0, c = data.length; i < c; i++) {
+                this.callScripts(data[i], args, context);
+            }
+        } else if (typeof data == 'object') {
+            for (var i in data) {
+                if (Ajs_Util.hasOwnProperty(data, i)) this.callScripts(data[i], args, context);
+            }
+        } else if (typeof data == 'function') {
+            data.apply(context, args);
+        } else if (typeof data == 'string') {
+            (function(d){eval(d);}).call(context, data);
+        }
+    },
     
     getElementsBy: function(method, tag, root, firstOnly) {
         tag = tag || '*';
@@ -490,7 +490,7 @@ Ajs_Util = {
     getData: function (oForm, submitButton) {
 
         var
-        	aElements,
+            aElements,
             nTotalElements,
             oData,
             sName,
@@ -559,9 +559,9 @@ Ajs_Util = {
                                     if (oElement.checked) oData[sName] = oElement.value;
                                 } else if (sType != "radio") {
                                     if (sType == "submit") {
-                                    	if (!submitButton || submitButton === oElement) oData[sName] = oElement.value;
+                                        if (!submitButton || submitButton === oElement) oData[sName] = oElement.value;
                                     } else {
-                                    	oData[sName] = oElement.value;
+                                        oData[sName] = oElement.value;
                                     }
                                 }
                                 break;
@@ -584,11 +584,11 @@ Ajs_Util = {
                                 }
 
                                 if (aValues.length) {
-	                                if (!oElement.getAttribute('multiple')) {
-	                                	oData[sName] = aValues[0];
-	                                } else {
-	                                    oData[sName] = aValues;
-	                                }
+                                    if (!oElement.getAttribute('multiple')) {
+                                        oData[sName] = aValues[0];
+                                    } else {
+                                        oData[sName] = aValues;
+                                    }
                                 }
                                 break;
                         }
@@ -810,7 +810,7 @@ Ajs_Util.DelayedCall = function(func, id, contextObject, args, delay, immediate)
 };
 
 Ajs_Util.DelayedCall.prototype = {
-	jsClassName: "Ajs_Util.DelayedCall", 
+    jsClassName: "Ajs_Util.DelayedCall", 
     func: null,
     id: null,
     contextObject: null,
@@ -832,8 +832,8 @@ Ajs_Util.DelayedCall.prototype = {
     },
 
     call: function() {
-    	this._clearTimeout();
-    	
+        this._clearTimeout();
+        
         if (this.delay) {
             if (!this._tmFn) this._tmFn = function(t) {
                 return function() {t._run();};
@@ -844,8 +844,8 @@ Ajs_Util.DelayedCall.prototype = {
     },
     
     callWithArgs: function() {
-    	this.args = Array.prototype.slice.call(arguments, 0);
-    	this.call();
+        this.args = Array.prototype.slice.call(arguments, 0);
+        this.call();
     },
 
     _run: function() {
@@ -857,7 +857,7 @@ Ajs_Util.DelayedCall.prototype = {
     },
     
     immediate: function() {
-    	this.cancel();
+        this.cancel();
         if (this.func) {
             var ctx = this.contextObject? this.contextObject : this;
             this.func.apply(ctx, this.args);
@@ -865,7 +865,7 @@ Ajs_Util.DelayedCall.prototype = {
     },
     
     isActive: function() {
-    	return !!this._timeout;
+        return !!this._timeout;
     },
 
     destroy: function() {
